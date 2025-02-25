@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.perpustakaan.beperpustakaan.constant.RolesConstant;
 import com.perpustakaan.beperpustakaan.entity.Roles;
@@ -24,6 +25,9 @@ public class InitialDataLoader implements ApplicationRunner{
     @Autowired
     UsersRespository usersRespository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         List<Roles> roles = rolesRepository.findAll();
@@ -36,7 +40,7 @@ public class InitialDataLoader implements ApplicationRunner{
             rolesRepository.saveAll(List.of(admin, perpustakawan, siswa));
         }
         if(users.isEmpty()){
-            Users user = new Users("12345678","admin","admin",admin);
+            Users user = new Users("12345678","admin",passwordEncoder.encode("admin"),admin);
             usersRespository.save(user);
         }
     }
