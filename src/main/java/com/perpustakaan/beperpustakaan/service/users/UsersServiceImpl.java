@@ -10,6 +10,8 @@ import com.perpustakaan.beperpustakaan.dto.users.UsersLoginResponseDto;
 import com.perpustakaan.beperpustakaan.util.JwtUtil;
 
 import com.perpustakaan.beperpustakaan.repository.UsersRespository;
+import com.perpustakaan.beperpustakaan.repository.RolesRepository;
+import com.perpustakaan.beperpustakaan.entity.Roles;
 import com.perpustakaan.beperpustakaan.entity.Users;
 
 @Service
@@ -23,6 +25,9 @@ public class UsersServiceImpl implements UsersService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RolesRepository rolesRepository;
 
     @Override
     public UsersLoginResponseDto login(String id,String pass){
@@ -40,5 +45,31 @@ public class UsersServiceImpl implements UsersService{
             }
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid username or password");
+    }
+
+    @Override
+    public String registrasiSiswa(String id, String password) {
+        Users user = userRepository.getReferenceById(id);
+        if(user != null){
+            user.setPassword(passwordEncoder.encode(password));
+            Roles role = rolesRepository.findByRolesName("SISWA");
+            user.setRoles(role);
+            userRepository.save(user);
+            return "success";
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not Listed");
+    }
+    
+    @Override
+    public String registrasiPerpustakawan(String id,String password){
+        Users user = userRepository.getReferenceById(id);
+        if(user != null){
+            user.setPassword(passwordEncoder.encode(password));
+            Roles role = rolesRepository.findByRolesName("PERPUSTAKAWAN");
+            user.setRoles(role);
+            userRepository.save(user);
+            return "success";
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not Listed");
     }
 }

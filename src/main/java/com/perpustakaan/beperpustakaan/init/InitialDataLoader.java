@@ -12,10 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.perpustakaan.beperpustakaan.constant.RolesConstant;
 import com.perpustakaan.beperpustakaan.entity.Roles;
 import com.perpustakaan.beperpustakaan.entity.Users;
+import com.perpustakaan.beperpustakaan.entity.Status;
 import com.perpustakaan.beperpustakaan.repository.RolesRepository;
 import com.perpustakaan.beperpustakaan.repository.UsersRespository;
-
-
+import com.perpustakaan.beperpustakaan.repository.StatusRepository;
 
 @Component 
 public class InitialDataLoader implements ApplicationRunner{
@@ -27,6 +27,9 @@ public class InitialDataLoader implements ApplicationRunner{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private StatusRepository statusRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -42,6 +45,11 @@ public class InitialDataLoader implements ApplicationRunner{
         if(users.isEmpty()){
             Users user = new Users("12345678","admin",passwordEncoder.encode("admin"),admin);
             usersRespository.save(user);
+        }
+        if(statusRepository.findAll().isEmpty()){
+            Status status1 = new Status(null,"Tersedia");
+            Status status2 = new Status(null,"TidakTersedia");
+            statusRepository.saveAll(List.of(status1,status2));
         }
     }
     

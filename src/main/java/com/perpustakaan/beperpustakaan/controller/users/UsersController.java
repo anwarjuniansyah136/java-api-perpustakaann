@@ -25,4 +25,22 @@ public class UsersController {
             return ResponseEntity.internalServerError().body(GenericResponse.error("internal server error"));
         }
     }
+
+    @PostMapping("/registrasi-siswa")
+    public ResponseEntity<Object> registrasiSiswa(@RequestParam String id,String password){
+        try{
+            return ResponseEntity.ok().body(GenericResponse.success(usersService.registrasiSiswa(id,password),"success"));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(GenericResponse.error("internal server error"));
+        }
+    }
+
+    @PostMapping("/registrasi-perpustakawan")
+    public ResponseEntity<Object> registrasiPerpustakawan(@RequestParam String id,String password){
+        try {
+            return ResponseEntity.ok().body(GenericResponse.success(usersService.registrasiPerpustakawan(id,password),"success"));
+        } catch (Exception e){
+            return ResponseEntity.internalServerError().body(GenericResponse.error("internal server error"));
+        }
+    }
 }

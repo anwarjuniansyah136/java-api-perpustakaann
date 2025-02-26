@@ -10,6 +10,7 @@ import com.perpustakaan.beperpustakaan.entity.Users;
 import com.perpustakaan.beperpustakaan.repository.UsersRespository;
 import com.perpustakaan.beperpustakaan.repository.RolesRepository;
 import com.perpustakaan.beperpustakaan.entity.Roles;
+import com.perpustakaan.beperpustakaan.dto.admin.AdminResponseDto;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -30,6 +31,46 @@ public class AdminServiceImpl implements AdminService{
             user.setRoles(roles);
             usersRepository.save(user);
         }
+        return "success";
+    }
+
+    @Override
+    public String addPerpustakawan(List<AdminRequestDto> dto){
+        Roles roles = rolesRepository.findByRolesName("PERPUSTAKAWAN");
+        for(AdminRequestDto st : dto){
+            Users user = new Users();
+            user.setId(st.getId());
+            user.setName(st.getName());
+            user.setRoles(roles);
+            usersRepository.save(user);
+        }
+        return "success";
+    }
+
+    @Override
+    public List<AdminResponseDto> getSiswa(){
+        Roles role = rolesRepository.findByRolesName("SISWA");
+        return usersRepository.findByRoles(role).stream().map(this::toAdminResponseDto).toList();
+    }
+
+    private AdminResponseDto toAdminResponseDto(Users users){
+        return AdminResponseDto
+                .builder()
+                .id(users.getId())
+                .name(users.getName())
+                .build();
+    }
+
+    @Override
+    public List<AdminResponseDto> getPerpustakawan(){
+        Roles role = rolesRepository.findByRolesName("PERPUSTAKAWAN");
+        return usersRepository.findByRoles(role).stream().map(this::toAdminResponseDto).toList();  
+    }
+
+    @Override
+    public String delete(String id){
+        Users user = usersRepository.getReferenceById(id);
+        usersRepository.delete(user);
         return "success";
     }
 }
