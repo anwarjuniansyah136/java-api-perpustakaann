@@ -37,5 +37,24 @@ public class BooksServiceImpl implements BooksService{
         booksCategorysService.add(books.getId(), idCategorys);
         return "success";
     }
+
+    @Override
+    public String updateBook(String id,BooksRequestDto dto, List<String> idCategory) {
+        Books books = booksRepository.getReferenceById(id);
+        books.setTitle(dto.getTitle());
+        books.setAutor(dto.getAuthor());
+        books.setStock(dto.getStock());
+        booksRepository.save(books);
+        booksCategorysService.update(id, idCategory);
+        return "success";
+    }
+
+    @Override
+    public String delete(String id) {
+        booksCategorysService.delete(id);
+        Books books = booksRepository.getReferenceById(id);
+        booksRepository.delete(books);
+        return "success";
+    }
     
 }

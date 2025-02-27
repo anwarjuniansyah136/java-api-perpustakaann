@@ -44,5 +44,36 @@ public class BooksCategorysServiceImpl implements BooksCategorysService{
         booksCategorysRepository.save(booksCategorys);
         return "success";
     }
+
+    @Override
+    public String update(String idBooks, List<String> idCategorys) {
+        Books books = booksRepository.getReferenceById(idBooks);
+        List<BooksCategorys> booksCategorys = booksCategorysRepository.findByBooks(books);
+        booksCategorysRepository.deleteAll(booksCategorys);
+        if(idCategorys.size() > 1){
+            for (String id : idCategorys) {
+                Categorys categorys = categorysRepository.getReferenceById(id);
+                BooksCategorys booksCategoryss = new BooksCategorys();
+                booksCategoryss.setBooks(books);
+                booksCategoryss.setCategorys(categorys);
+                booksCategorysRepository.save(booksCategoryss);
+            }
+            return "success";
+        }
+        Categorys categorys = categorysRepository.getReferenceById(idCategorys.get(0));
+        BooksCategorys booksCategoryss = new BooksCategorys();
+        booksCategoryss.setBooks(books);
+        booksCategoryss.setCategorys(categorys);
+        booksCategorysRepository.save(booksCategoryss);
+        return "success";
+    }
+
+    @Override
+    public String delete(String idBooks) {
+        Books books = booksRepository.getReferenceById(idBooks);
+        List<BooksCategorys> bc = booksCategorysRepository.findByBooks(books);
+        booksCategorysRepository.deleteAll(bc);
+        return "success";
+    }
     
 }
