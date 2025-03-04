@@ -6,6 +6,6 @@ import com.perpustakaan.beperpustakaan.entity.Status;
 
 public interface StatusRepository extends JpaRepository<Status,String> {
 
-    Status findByDesc(String string);
+    Status findByDescription(String string);
     
 }

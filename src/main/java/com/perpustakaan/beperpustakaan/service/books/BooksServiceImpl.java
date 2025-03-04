@@ -31,7 +31,7 @@ public class BooksServiceImpl implements BooksService{
         books.setTitle(dto.getTitle());
         books.setAutor(books.getAutor());
         books.setStock(books.getStock());
-        Status status = statusRepository.findByDesc("Tersedia");
+        Status status = statusRepository.findByDescription("Tersedia");
         books.setStatus(status);
         booksRepository.save(books);
         booksCategorysService.add(books.getId(), idCategorys);

@@ -16,6 +16,6 @@ public class Status {
     @Column(name = "id",length = 36,nullable = false)
     private String id;
 
-    @Column(name = "desc")
-    private String desc;
+    @Column(name = "description")
+    private String description;
 }

@@ -11,4 +11,5 @@ public interface AdminService {
     public List<AdminResponseDto> getSiswa();
     public List<AdminResponseDto> getPerpustakawan();
     public String delete(String id);
+    public String editUsers(String oldId,String name,String newId);
 }

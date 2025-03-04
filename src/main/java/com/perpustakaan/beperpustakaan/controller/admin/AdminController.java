@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,7 @@ public class AdminController {
         }
     }
     
-    @PostMapping("/add-data-siswa")
+    @PostMapping("/add-data-perpustakawan")
     @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<Object> addPerpustakawan(@RequestBody List<AdminRequestDto> dto){
         try{
@@ -59,6 +62,26 @@ public class AdminController {
     public ResponseEntity<Object> getPerpustakawan(){
         try{
             return ResponseEntity.ok().body(GenericResponse.success(adminService.getPerpustakawan(),"success"));
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body(GenericResponse.error("internal server error"));
+        }
+    }
+
+    @PutMapping("/edit-users")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<Object> editUsers(@RequestParam String oldId,@RequestParam(required = false) String name,@RequestParam(required = false) String newId){
+        try{
+            return ResponseEntity.ok().body(GenericResponse.success(adminService.editUsers(oldId, name, newId),"success"));
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body(GenericResponse.error("internal server error"));
+        }
+    }
+
+    @DeleteMapping("/delete-users")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<Object> deleteUsers(@RequestParam String id){
+        try{
+            return ResponseEntity.ok().body(GenericResponse.success(adminService.delete(id),"success"));
         }catch(Exception e){
             return ResponseEntity.internalServerError().body(GenericResponse.error("internal server error"));
         }

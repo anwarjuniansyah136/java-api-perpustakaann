@@ -73,4 +73,24 @@ public class AdminServiceImpl implements AdminService{
         usersRepository.delete(user);
         return "success";
     }
+
+    @Override
+    public String editUsers(String oldId, String name, String newId) {
+        Users users = usersRepository.getReferenceById(oldId);
+        if(newId != null){
+            Users users2 = new Users();
+            users2.setId(newId);
+            users2.setName(name);
+            users2.setRoles(users.getRoles());
+            if(users.getPassword() != null){
+                users2.setPassword(users.getPassword());
+            }
+            usersRepository.delete(users);
+            usersRepository.save(users);
+            return "success";
+        }
+        users.setName(name);
+        usersRepository.save(users);
+        return "success";
+    }
 }
